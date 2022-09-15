@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 const EXPIRY_TIME = 1000;
 
-const genrateCode = (n) => {
+const generateCode = (n) => {
   var add = 1,
     max = 12 - add; // 12 is the min safe number Math.random() can generate without it starting to pad the end with zeros.
 
@@ -18,7 +18,7 @@ const genrateCode = (n) => {
 };
 
 export function Timer() {
-  const [otp, setOtp] = useState(genrateCode(6));
+  const [otp, setOtp] = useState(generateCode(6));
   const [timer, setTimer] = useState(30);
 
   useEffect(() => {
