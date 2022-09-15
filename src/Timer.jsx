@@ -24,7 +24,7 @@ export function Timer() {
   useEffect(() => {
     const timerInterval = setInterval(() => {
       if (timer === 0) {
-        setOtp(genrateCode(6));
+        setOtp(generateCode(6));
         setTimer(30);
       } else {
         setTimer(timer - 1);
