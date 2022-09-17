@@ -37,12 +37,24 @@ export function InfiniteScroll() {
   }, [handleObserver]);
 
   return (
-    <div className="container">
-      <h1>Search Book</h1>
-      <input type="text" onChange={handleChange} value={query} />
-      {data.map((item, index) => (
-        <div key={index}>{item}</div>
-      ))}
+    <div className="w-full max-w-xs">
+      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h1>Search Book</h1>
+        <input type="text" onChange={handleChange} value={query} />
+      </form>
+
+      <div>
+        <ul className="w-48 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          {data.map((item, index) => (
+            <li
+              className="py-2 px-4 w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600"
+              key={index}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
       <div>{loading && 'Loading...'}</div>
       <div>{error && 'Error...'}</div>
       <div ref={loader} />

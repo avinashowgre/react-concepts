@@ -74,7 +74,7 @@ export function Carousel(props) {
     <div className="carousel">
       <button
         type="button"
-        className="carousel__slide-arrow"
+        className="carousel__slide-arrow bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
         onClick={showPrev}
         ref={prevButtonRef}
       >
@@ -95,7 +95,7 @@ export function Carousel(props) {
       </div>
       <button
         type="button"
-        className="carousel__slide-arrow"
+        className="carousel__slide-arrow bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
         onClick={showNext}
         ref={nextButtonRef}
       >

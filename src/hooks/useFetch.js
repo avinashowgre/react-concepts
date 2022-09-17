@@ -10,9 +10,7 @@ export function useFetch(url) {
       await setLoading(true);
       await setError(false);
       const res = await fetch(url).then((data) => data.json());
-      await setData((prev) => {
-        return [...new Set([...prev, ...res.docs.map((d) => d.title)])];
-      });
+      await setData([...new Set([...res.docs.map((d) => d.title)])]);
     } catch (err) {
       setError(err);
     } finally {
@@ -21,7 +19,6 @@ export function useFetch(url) {
   }, [url]);
 
   useEffect(() => {
-    console.log(url);
     sendQuery(url);
   }, [url]);
 
