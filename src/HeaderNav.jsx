@@ -12,7 +12,7 @@ export function HeaderNav() {
       <Link to="/">Home</Link> | <Link to="/form">Form</Link> |{' '}
       <Link to="/debounce">Debounce</Link> |{' '}
       <Link to="/carousel">Carousel</Link> | <Link to="/timer">Timer</Link> |{' '}
-      <Link to="/iscroll">Infinite Scroll</Link>
+      <Link to="/iscroll">Infinite Scroll</Link> | <Link to="/meme">Meme</Link>
     </nav>
   );
 }

@@ -10,6 +10,7 @@ import { Debounce } from './Debounce';
 import { Carousel } from './Carousel';
 import { Timer } from './Timer';
 import { InfiniteScroll } from './InfiniteScroll';
+import { Meme } from './Meme';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
@@ -25,6 +26,7 @@ root.render(
         <Route path="debounce" element={<Debounce />} />
         <Route path="timer" element={<Timer />} />
         <Route path="iscroll" element={<InfiniteScroll />} />
+        <Route path="meme" element={<Meme />} />
       </Routes>
     </div>
   </BrowserRouter>
