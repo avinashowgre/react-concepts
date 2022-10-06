@@ -6,34 +6,45 @@ export function MemePreview(props) {
   const { imageBlob, texts = [] } = props;
 
   const canvas = useRef();
-  const [captionTexts, setCaptionTexts] = useState([]);
-  const [selectedTextIndex, setSelectedTextIndex] = useState(-1);
+  const [captions, setCaptions] = useState([]);
+  const [selectedText, setSelectedText] = useState(-1);
+  const [offset, setOffset] = useState({
+    offsetX: 0,
+    offsetY: 0,
+  });
 
-  let startX = null;
-  let startY = null;
+  const [start, setStart] = useState({
+    startX: 0,
+    startY: 0,
+  });
 
   useEffect(() => {
-    let textsCpy = [...texts];
+    setOffset({
+      offsetX: canvas.current.offsetLeft,
+      offsetY: canvas.current.offsetTop,
+    });
+  }, []);
 
-    textsCpy.forEach((text) => {
-      text.width = Math.round(
-        canvas.current.getContext('2d').measureText(text.text).width
-      );
-      text.height = 16;
+  useEffect(() => {
+    canvas.current.getContext('2d').font = '30pt Impact';
+
+    texts.forEach((text) => {
+      text.width = canvas.current.getContext('2d').measureText(text.text).width;
+      text.height = 80;
     });
 
-    setCaptionTexts(textsCpy);
+    setCaptions(texts);
   }, [texts]);
 
   useEffect(() => {
-    if (!imageBlob) return;
-
-    draw(imageBlob, captionTexts);
-  }, [imageBlob, captionTexts]);
+    draw(imageBlob, captions);
+  }, [imageBlob, captions]);
 
   function draw(blob, texts) {
     const context = canvas.current.getContext('2d');
     const image = new Image();
+
+    context.clearRect(0, 0, canvas.current.width, canvas.current.height);
 
     image.onload = () => {
       context.drawImage(
@@ -47,7 +58,7 @@ export function MemePreview(props) {
       texts.forEach((caption) => {
         const { text, x, y } = caption;
         // Text attributes
-        context.font = '30pt Impact';
+        context.font = '80px Impact';
         context.textAlign = 'center';
         context.strokeStyle = 'black';
         context.lineWidth = 3;
@@ -60,74 +71,77 @@ export function MemePreview(props) {
     image.src = blob;
   }
 
-  function textHit(startx, starty) {
-    for (let i = 0; i < captionTexts.length; i++) {
-      const box = captionTexts[i];
-      if (
-        startx >= box.x &&
-        startx <= box.x + box.width &&
-        starty >= box.y &&
-        starty <= box.y + box.height
-      ) {
-        return i;
-      }
-    }
-
-    return -1;
+  function textHit(startX, startY, textIndex) {
+    var text = captions[textIndex];
+    return (
+      startX >= text.x &&
+      startX <= text.x + text.width &&
+      startY >= text.y - text.height &&
+      startY <= text.y
+    );
   }
 
   function handleMouseDown(e) {
     e.preventDefault();
 
-    startX = parseInt(e.nativeEvent.offsetX - canvas.current.clientLeft);
-    startY = parseInt(e.nativeEvent.offsetY - canvas.current.clientTop);
+    const { offsetX, offsetY } = offset;
+    const { startX, startY } = start;
 
-    const isHitIndex = textHit(startX, startY);
+    setStart({
+      startX: parseInt(e.pageX - offsetX),
+      startY: parseInt(e.pageY - offsetY),
+    });
 
-    console.log(isHitIndex);
-
-    if (isHitIndex > -1) {
-      canvas.current.style.cursor = 'pointer';
+    // Put your mousedown stuff here
+    for (var i = 0; i < captions.length; i++) {
+      if (textHit(startX, startY, i)) {
+        canvas.current.style.cursor = 'pointer';
+        setSelectedText(i);
+      }
     }
-
-    setSelectedTextIndex(isHitIndex);
   }
 
   function handleMouseMove(e) {
+    if (selectedText < 0) return;
+
     e.preventDefault();
 
-    if (selectedTextIndex < 0) return;
+    const { offsetX, offsetY } = offset;
+    const { startX, startY } = start;
 
-    const mouseX = parseInt(e.nativeEvent.offsetX - canvas.current.clientLeft);
-    const mouseY = parseInt(e.nativeEvent.offsetY - canvas.current.clientTop);
+    const mouseX = parseInt(e.pageX - offsetX);
+    const mouseY = parseInt(e.pageY - offsetY);
 
     // Put your mousemove stuff here
     var dx = mouseX - startX;
     var dy = mouseY - startY;
 
-    startX = mouseX;
-    startY = mouseY;
+    setStart({
+      startX: mouseX,
+      startY: mouseY,
+    });
 
-    const captionTextsCpy = [...captionTexts];
+    let captionsCpy = captions.map((caption, index) => {
+      if (selectedText === index) {
+        caption.x += dx;
+        caption.y += dy;
+      }
+      return caption;
+    });
 
-    captionTextsCpy[selectedTextIndex].x = dx;
-    captionTextsCpy[selectedTextIndex].y = dy;
-
-    setCaptionTexts(captionTextsCpy);
+    setCaptions(captionsCpy);
   }
 
   function handleMouseUp(e) {
     e.preventDefault();
-    setSelectedTextIndex(-1);
+    setSelectedText(-1);
     canvas.current.style.cursor = 'auto';
   }
 
   function handleMouseOut(e) {
     e.preventDefault();
-    setSelectedTextIndex(-1);
+    setSelectedText(-1);
   }
-
-  if (!imageBlob) return null;
 
   return (
     <canvas
