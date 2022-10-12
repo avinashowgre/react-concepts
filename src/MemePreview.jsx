@@ -6,28 +6,20 @@ export function MemePreview(props) {
   const { imageBlob, texts = [] } = props;
 
   const canvas = useRef();
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const offsetX = useRef(0);
+  const offsetY = useRef(0);
+
   const [captions, setCaptions] = useState([]);
   const [selectedText, setSelectedText] = useState(-1);
-  const [offset, setOffset] = useState({
-    offsetX: 0,
-    offsetY: 0,
-  });
-
-  const [start, setStart] = useState({
-    startX: 0,
-    startY: 0,
-  });
 
   useEffect(() => {
-    setOffset({
-      offsetX: canvas.current.offsetLeft,
-      offsetY: canvas.current.offsetTop,
-    });
+    offsetX.current = canvas.current.offsetLeft;
+    offsetY.current = canvas.current.offsetTop;
   }, []);
 
   useEffect(() => {
-    canvas.current.getContext('2d').font = '30pt Impact';
-
     texts.forEach((text) => {
       text.width = canvas.current.getContext('2d').measureText(text.text).width;
       text.height = 80;
@@ -59,7 +51,6 @@ export function MemePreview(props) {
         const { text, x, y } = caption;
         // Text attributes
         context.font = '80px Impact';
-        context.textAlign = 'center';
         context.strokeStyle = 'black';
         context.lineWidth = 3;
         context.fillStyle = 'white';
@@ -84,17 +75,12 @@ export function MemePreview(props) {
   function handleMouseDown(e) {
     e.preventDefault();
 
-    const { offsetX, offsetY } = offset;
-    const { startX, startY } = start;
-
-    setStart({
-      startX: parseInt(e.pageX - offsetX),
-      startY: parseInt(e.pageY - offsetY),
-    });
+    startX.current = parseInt(e.pageX - offsetX.current);
+    startY.current = parseInt(e.pageY - offsetY.current);
 
     // Put your mousedown stuff here
     for (var i = 0; i < captions.length; i++) {
-      if (textHit(startX, startY, i)) {
+      if (textHit(startX.current, startY.current, i)) {
         canvas.current.style.cursor = 'pointer';
         setSelectedText(i);
       }
@@ -106,20 +92,15 @@ export function MemePreview(props) {
 
     e.preventDefault();
 
-    const { offsetX, offsetY } = offset;
-    const { startX, startY } = start;
-
-    const mouseX = parseInt(e.pageX - offsetX);
-    const mouseY = parseInt(e.pageY - offsetY);
+    const mouseX = parseInt(e.pageX - offsetX.current);
+    const mouseY = parseInt(e.pageY - offsetY.current);
 
     // Put your mousemove stuff here
-    var dx = mouseX - startX;
-    var dy = mouseY - startY;
+    var dx = mouseX - startX.current;
+    var dy = mouseY - startY.current;
 
-    setStart({
-      startX: mouseX,
-      startY: mouseY,
-    });
+    startX.current = mouseX;
+    startY.current = mouseY;
 
     let captionsCpy = captions.map((caption, index) => {
       if (selectedText === index) {

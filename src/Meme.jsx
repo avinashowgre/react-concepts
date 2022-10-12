@@ -39,6 +39,14 @@ export function Meme(props) {
     setCaptions(captionsCpy);
   }
 
+  function handleBtnClick(index) {
+    let captionsCpy = [...captions];
+
+    captionsCpy.splice(index, 1);
+
+    setCaptions(captionsCpy);
+  }
+
   return (
     <div className="meme-container">
       <MemeUploader onFileInput={handleFileInput} />
@@ -55,6 +63,7 @@ export function Meme(props) {
                 onInputChange={(e) =>
                   handleCaptionChange(index, e.target.value)
                 }
+                onBtnClick={(e) => handleBtnClick(index)}
               />
             ))}
           </div>
