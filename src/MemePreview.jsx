@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 const TEST_ID = 'meme-preview';
 
 export function MemePreview(props) {
-  const { imageBlob, texts = [] } = props;
+  const { imageBlob, setMeme, texts = [] } = props;
 
   const canvas = useRef();
   const startX = useRef(0);
@@ -17,6 +17,8 @@ export function MemePreview(props) {
   useEffect(() => {
     offsetX.current = canvas.current.offsetLeft;
     offsetY.current = canvas.current.offsetTop;
+
+    setMeme(canvas.current);
   }, []);
 
   useEffect(() => {
@@ -48,18 +50,45 @@ export function MemePreview(props) {
       );
 
       texts.forEach((caption) => {
-        const { text, x, y } = caption;
+        const { text, x, y, width, height } = caption;
         // Text attributes
         context.font = '80px Impact';
         context.strokeStyle = 'black';
         context.lineWidth = 3;
         context.fillStyle = 'white';
 
-        context.fillText(text, x, y);
-        context.strokeText(text, x, y);
+        wrapText(context, text, x, y);
       });
     };
     image.src = blob;
+  }
+
+  function wrapText(
+    context,
+    text,
+    x,
+    y,
+    maxWidth = canvas.current.width / 2,
+    lineHeight = 100
+  ) {
+    var words = text.split(' ');
+    var line = '';
+
+    for (var n = 0; n < words.length; n++) {
+      var testLine = line + words[n] + ' ';
+      var metrics = context.measureText(testLine);
+      var testWidth = metrics.width;
+      if (testWidth > maxWidth && n > 0) {
+        context.fillText(line, x, y);
+        context.strokeText(line, x, y);
+        line = words[n] + ' ';
+        y += lineHeight;
+      } else {
+        line = testLine;
+      }
+    }
+    context.fillText(line, x, y);
+    context.strokeText(line, x, y);
   }
 
   function textHit(startX, startY, textIndex) {

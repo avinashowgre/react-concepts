@@ -15,6 +15,7 @@ import { Caption } from './Caption';
 export function Meme(props) {
   const [image, setImage] = useState();
   const [captions, setCaptions] = useState([]);
+  const [meme, setMeme] = useState();
 
   function handleFileInput(event) {
     if (event.target.files.length > 0) {
@@ -47,12 +48,21 @@ export function Meme(props) {
     setCaptions(captionsCpy);
   }
 
+  function saveFile() {
+    var win = window.open();
+    win.document.write(
+      '<iframe src="' +
+        meme.toDataURL('image/png') +
+        '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>'
+    );
+  }
+
   return (
     <div className="meme-container">
       <MemeUploader onFileInput={handleFileInput} />
       {image && (
         <div style={{ alignItems: 'flex-start', display: 'flex', gap: '20px' }}>
-          <MemePreview imageBlob={image} texts={captions} />
+          <MemePreview imageBlob={image} setMeme={setMeme} texts={captions} />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <button type="button" onClick={addCaption}>
               Add Caption
@@ -66,6 +76,10 @@ export function Meme(props) {
                 onBtnClick={(e) => handleBtnClick(index)}
               />
             ))}
+
+            <button type="button" onClick={saveFile}>
+              Create
+            </button>
           </div>
         </div>
       )}
