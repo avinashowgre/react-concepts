@@ -58,3 +58,11 @@ p {
 .item {
   height: 20px;
 }
+
+.Dropdown-control {
+  border: unset !important;
+}
+
+.Dropdown-control:hover {
+  box-shadow: unset !important;
+}
