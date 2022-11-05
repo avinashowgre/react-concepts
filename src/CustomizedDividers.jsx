@@ -1,12 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { styled } from '@mui/material/styles';
 
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
-import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -27,16 +24,29 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   },
 }));
 
-export function CustomizedDividers() {
-  const [alignment, setAlignment] = React.useState('left');
-  const [formats, setFormats] = React.useState(() => ['italic']);
+export function CustomizedDividers(props) {
+  const { styles, onStyleChange } = props;
+
+  const { formats, fillStyle } = useMemo(() => {
+    const { font, fillStyle } = styles;
+    return {
+      formats: font.split(' '),
+      fillStyle,
+    };
+  }, [styles]);
 
   const handleFormat = (event, newFormats) => {
-    setFormats(newFormats);
+    onStyleChange({
+      font: newFormats.join(' '),
+      fillStyle,
+    });
   };
 
-  const handleAlignment = (event, newAlignment) => {
-    setAlignment(newAlignment);
+  const handleFontColor = (event) => {
+    onStyleChange({
+      font: formats.join(' '),
+      fillStyle: event.target.value,
+    });
   };
 
   return (
@@ -61,19 +71,15 @@ export function CustomizedDividers() {
           <ToggleButton value="italic" aria-label="italic">
             <FormatItalicIcon />
           </ToggleButton>
-          <ToggleButton value="underlined" aria-label="underlined">
-            <FormatUnderlinedIcon />
-          </ToggleButton>
-          <ToggleButton value="color" aria-label="color">
-            <input
-              class="editor__style color-picker"
-              type="color"
-              id="color-picker"
-              name="body"
-            />
-            <ArrowDropDownIcon />
-          </ToggleButton>
         </StyledToggleButtonGroup>
+        <input
+          class="editor__style color-picker"
+          type="color"
+          id="color-picker"
+          name="body"
+          onChange={handleFontColor}
+          value={fillStyle}
+        />
       </Paper>
     </div>
   );

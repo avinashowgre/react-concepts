@@ -9,14 +9,6 @@ import { MemeUploader } from './MemeUploader';
 import { MemePreview } from './MemePreview';
 import { Caption } from './Caption';
 
-/**
- * Meme component that takes in image upload and render on canvas element.
- * 1) Create a input type file component
- * 2) Create canvas element that displayed on image render
- * 3) Show close button to remove the rendered image.
- * 4) Add caption feature
- */
-
 export function Meme() {
   const [image, setImage] = useState();
   const [captions, setCaptions] = useState([]);
@@ -33,7 +25,10 @@ export function Meme() {
     e.preventDefault();
 
     const caption = {
-      fillStyle: 'white',
+      styles: {
+        font: 'bold',
+        fillStyle: '#ffffff',
+      },
       text: '',
       x: 250,
       y: 160 + 20 * captions.length,
@@ -42,10 +37,10 @@ export function Meme() {
     setCaptions((prevState) => [...prevState, caption]);
   }
 
-  function handleCaptionChange(index, newValue) {
+  function handleCaptionChange(index, captionObj) {
     let captionsCpy = [...captions];
 
-    captionsCpy[index].text = newValue;
+    captionsCpy.splice(index, 1, captionObj);
 
     setCaptions(captionsCpy);
   }
@@ -89,8 +84,8 @@ export function Meme() {
               {captions.map((caption, index) => (
                 <Caption
                   caption={caption}
-                  onInputChange={(e) =>
-                    handleCaptionChange(index, e.target.value)
+                  onChange={(captionObj) =>
+                    handleCaptionChange(index, captionObj)
                   }
                   onBtnClick={(e) => handleBtnClick(index)}
                 />

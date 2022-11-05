@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+import WebFont from 'webfontloader';
 
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 
@@ -13,58 +15,50 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import { CustomizedDividers } from './CustomizedDividers';
 
-const EditBtnStyles = {
-  alignItems: 'center',
-  background: 'white',
-  border: 'unset',
-  cursor: 'pointer',
-  display: 'flex',
-  fontSize: '24px',
-  height: '40px',
-  justifyContent: 'center',
-  padding: '5px 10px',
-  width: '40px',
-};
-
-function EditorMenu() {
-  return (
-    <PopupState variant="popover" popupId="demo-popup-popover">
-      {(popupState) => (
-        <>
-          <IconButton
-            type="button"
-            sx={{ p: '10px' }}
-            aria-label="search"
-            {...bindTrigger(popupState)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Popover
-            {...bindPopover(popupState)}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-            transformOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-          >
-            <CustomizedDividers />
-          </Popover>
-        </>
-      )}
-    </PopupState>
-  );
-}
-
 export function Caption(props) {
-  const { caption, onInputChange, onBtnClick } = props;
+  const { caption, onChange, onBtnClick } = props;
+  const [webFonts, setWebFonts] = useState([]);
+  const { styles, text } = caption;
 
-  /**
-   * This function handles change in the caption style or input
-   */
-  function handleCaptionChange(updatedCaption) {}
+  useEffect(() => {
+    let active = true;
+
+    (async function () {
+      const { items: fonts } = await fetch(
+        'https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyB1aj9FtKfyxWips2YVhIzrKOeqdUegvKM'
+      ).then((data) => data.json());
+      const fontFamilies = fonts.map((font) => font.family);
+
+      if (active) {
+        setWebFonts(fontFamilies);
+
+        // To load font family dynamically on user selection
+        WebFont.load({
+          google: {
+            families: ['ABeeZee'],
+          },
+        });
+      }
+    })();
+
+    () => {
+      active = false;
+    };
+  }, []);
+
+  function handleStyleChange(styles) {
+    onChange({
+      ...caption,
+      styles,
+    });
+  }
+
+  function handleInputChange(text) {
+    onChange({
+      ...caption,
+      text,
+    });
+  }
 
   return (
     <Paper
@@ -73,13 +67,42 @@ export function Caption(props) {
     >
       <InputBase
         inputProps={{ 'aria-label': 'add caption' }}
-        onChange={onInputChange}
+        onChange={(e) => handleInputChange(e.target.value)}
         placeholder="Add caption"
-        sx={{ ml: 1, flex: 1 }}
-        value={caption.text}
+        sx={{ ml: 1, flex: 1, fontFamily: 'ABeeZee' }}
+        value={text}
       />
 
-      <EditorMenu />
+      <PopupState variant="popover" popupId="demo-popup-popover">
+        {(popupState) => (
+          <>
+            <IconButton
+              type="button"
+              sx={{ p: '10px' }}
+              aria-label="search"
+              {...bindTrigger(popupState)}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Popover
+              {...bindPopover(popupState)}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+              transformOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+            >
+              <CustomizedDividers
+                styles={styles}
+                onStyleChange={handleStyleChange}
+              />
+            </Popover>
+          </>
+        )}
+      </PopupState>
 
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
 
