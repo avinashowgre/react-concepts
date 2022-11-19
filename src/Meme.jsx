@@ -6,7 +6,8 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 
 import { MemeUploader } from './MemeUploader';
-import { MemePreview } from './MemePreview';
+// import { MemePreview } from './MemePreview';
+import { MemePreviewCpy } from './MemePreviewCpy';
 import { Caption } from './Caption';
 
 export function Meme() {
@@ -67,7 +68,12 @@ export function Meme() {
       <MemeUploader onFileInput={handleFileInput} />
       {image && (
         <div style={{ alignItems: 'flex-start', display: 'flex', gap: '20px' }}>
-          <MemePreview imageBlob={image} setMeme={setMeme} texts={captions} />
+          {/* <MemePreview imageBlob={image} setMeme={setMeme} texts={captions} /> */}
+          <MemePreviewCpy
+            imageBlob={image}
+            setMeme={setMeme}
+            texts={captions}
+          />
           <div
             style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
           >
