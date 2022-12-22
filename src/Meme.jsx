@@ -26,10 +26,6 @@ export function Meme() {
     e.preventDefault();
 
     const caption = {
-      styles: {
-        font: 'bold',
-        fillStyle: '#ffffff',
-      },
       text: '',
       x: 250,
       y: 160 + 20 * captions.length,
@@ -73,6 +69,7 @@ export function Meme() {
             imageBlob={image}
             setMeme={setMeme}
             texts={captions}
+            onCaptionChange={handleCaptionChange}
           />
           <div
             style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}

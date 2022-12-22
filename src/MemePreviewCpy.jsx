@@ -1,47 +1,88 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const TEST_ID = 'meme-preview';
 const fontSize = '24px';
 
-export function MemePreviewCpy() {
-  const { imageBlob, setMeme, texts = [] } = props;
+export function MemePreviewCpy(props) {
+  const { imageBlob, onCaptionChange, setMeme, texts = [] } = props;
   const [canvasStage, setCanvasStage] = useState();
+  const canvasRef = useRef();
 
   useEffect(() => {
     const stage = new createjs.Stage(TEST_ID);
     setCanvasStage(stage);
+    setMeme(canvasRef.current);
   }, []);
 
-  function draw() {
-    const bitmap = new createjs.Bitmap(imageBlob);
-    stage.addChild(bitmap);
+  useEffect(() => {
+    if (!canvasStage) return;
+    draw();
+  }, [imageBlob, texts, canvasStage]);
 
-    texts.forEach((inputText, index) => {
-      const { text } = inputText;
-      let createText = new createjs.Text();
-      createText.set({
+  function drag(evt) {
+    evt.target.x = evt.stageX;
+    evt.target.y = evt.stageY;
+    evt.target.cursor = 'pointer';
+    canvasStage.update();
+  }
+
+  function drop(evt, index) {
+    if (onCaptionChange) {
+      const { text, x, y } = evt.target;
+      onCaptionChange(index, {
         text,
-        font: 'italic 16px Arial black',
-        lineWidth: canvasStage.canvas.width / 2,
-        lineHeight: 20,
-        textBaseline: 'top',
-        textAlign: 'left',
-        x: 0,
-        y: (index + 1) * parseInt(fontSize, 0),
+        x,
+        y,
       });
-      // inputText = { ...inputText, ...createText.getBounds() };
-      createText.on('pressmove', drag);
-      stage.addChild(createText);
-      stage.update();
-    });
+    }
+  }
+
+  function draw() {
+    canvasStage.removeAllChildren();
+
+    const image = new Image();
+
+    image.onload = (evt) => {
+      const img = evt.target;
+      var bitmap = new createjs.Bitmap(img);
+      bitmap.scaleX = canvasRef.current.width / image.width;
+      bitmap.scaleY = canvasRef.current.height / image.height;
+
+      canvasStage.addChild(bitmap);
+
+      texts.forEach((inputText, index) => {
+        const { text, x, y } = inputText;
+        let createText = new createjs.Text();
+        createText.set({
+          text,
+          font: 'italic 16px Arial black',
+          lineWidth: canvasStage.canvas.width / 2,
+          lineHeight: 20,
+          textBaseline: 'top',
+          textAlign: 'left',
+          x,
+          y,
+        });
+        createText.on('pressmove', drag);
+        createText.on('pressup', function (evt) {
+          drop(evt, index);
+        });
+        canvasStage.addChild(createText);
+      });
+
+      canvasStage.update();
+    };
+
+    image.src = imageBlob;
   }
 
   return (
     <canvas
+      ref={canvasRef}
       height="600"
       id={TEST_ID}
-      ref={canvas}
       style={{
+        border: '1px solid black',
         maxWidth: '100%',
         height: 'auto',
       }}
