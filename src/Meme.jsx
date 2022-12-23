@@ -26,6 +26,8 @@ export function Meme() {
     e.preventDefault();
 
     const caption = {
+      color: '',
+      font: '',
       text: '',
       x: 250,
       y: 160 + 20 * captions.length,

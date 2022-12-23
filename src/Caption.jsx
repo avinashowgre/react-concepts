@@ -18,7 +18,7 @@ import { CustomizedDividers } from './CustomizedDividers';
 export function Caption(props) {
   const { caption, onChange, onBtnClick } = props;
   const [webFonts, setWebFonts] = useState([]);
-  const { styles, text } = caption;
+  const { color, font, text } = caption;
 
   useEffect(() => {
     let active = true;
@@ -49,7 +49,7 @@ export function Caption(props) {
   function handleStyleChange(styles) {
     onChange({
       ...caption,
-      styles,
+      ...styles,
     });
   }
 
@@ -96,7 +96,7 @@ export function Caption(props) {
               }}
             >
               <CustomizedDividers
-                styles={styles}
+                styles={{ font, color }}
                 onStyleChange={handleStyleChange}
               />
             </Popover>

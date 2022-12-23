@@ -54,8 +54,9 @@ export function MemePreviewCpy(props) {
         const { text, x, y } = inputText;
         let createText = new createjs.Text();
         createText.set({
+          color: 'white',
           text,
-          font: 'italic 16px Arial black',
+          font: 'italic 25px ABeeZee',
           lineWidth: canvasStage.canvas.width / 2,
           lineHeight: 20,
           textBaseline: 'top',

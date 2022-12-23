@@ -27,11 +27,11 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 export function CustomizedDividers(props) {
   const { styles, onStyleChange } = props;
 
-  const { formats, fillStyle } = useMemo(() => {
-    const { font, fillStyle } = styles;
+  const { formats, color } = useMemo(() => {
+    const { font, color } = styles;
     return {
       formats: font.split(' '),
-      fillStyle,
+      color,
     };
   }, [styles]);
 
@@ -45,7 +45,7 @@ export function CustomizedDividers(props) {
   const handleFontColor = (event) => {
     onStyleChange({
       font: formats.join(' '),
-      fillStyle: event.target.value,
+      color: event.target.value,
     });
   };
 
@@ -78,7 +78,7 @@ export function CustomizedDividers(props) {
           id="color-picker"
           name="body"
           onChange={handleFontColor}
-          value={fillStyle}
+          value={color}
         />
       </Paper>
     </div>
