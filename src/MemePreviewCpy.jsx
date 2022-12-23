@@ -42,21 +42,20 @@ export function MemePreviewCpy(props) {
 
     const image = new Image();
 
-    image.onload = (evt) => {
-      const img = evt.target;
-      var bitmap = new createjs.Bitmap(img);
+    image.onload = () => {
+      var bitmap = new createjs.Bitmap(image);
       bitmap.scaleX = canvasRef.current.width / image.width;
       bitmap.scaleY = canvasRef.current.height / image.height;
 
       canvasStage.addChild(bitmap);
 
       texts.forEach((inputText, index) => {
-        const { text, x, y } = inputText;
+        const { color, font, fontSize, text, x, y } = inputText;
         let createText = new createjs.Text();
         createText.set({
-          color: 'white',
+          color,
           text,
-          font: 'italic 25px ABeeZee',
+          font: `${font} 50px Arial`,
           lineWidth: canvasStage.canvas.width / 2,
           lineHeight: 20,
           textBaseline: 'top',

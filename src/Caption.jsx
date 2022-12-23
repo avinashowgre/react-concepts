@@ -47,6 +47,7 @@ export function Caption(props) {
   }, []);
 
   function handleStyleChange(styles) {
+    console.log(styles);
     onChange({
       ...caption,
       ...styles,

@@ -101,7 +101,7 @@ export function Meme() {
               variant="contained"
               onClick={saveFile}
               sx={{ width: 100 }}
-              disabled={!captions.length > 0}
+              disabled={captions.length === 0}
             >
               Save
             </Button>

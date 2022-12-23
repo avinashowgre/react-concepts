@@ -12,6 +12,7 @@ import { Timer } from './Timer';
 import { InfiniteScroll } from './InfiniteScroll';
 import { Meme } from './Meme';
 import Dichik from './Color';
+import { CustomizedDividersContainer } from './CustomizedDividersContainer';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
@@ -29,6 +30,10 @@ root.render(
         <Route path="iscroll" element={<InfiniteScroll />} />
         <Route path="meme" element={<Meme />} />
         <Route path="dichik" element={<Dichik />} />
+        <Route
+          path="customdividers"
+          element={<CustomizedDividersContainer />}
+        />
       </Routes>
     </div>
   </BrowserRouter>
