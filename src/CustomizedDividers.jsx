@@ -5,6 +5,7 @@ import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
@@ -28,7 +29,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 }));
 
 const CustomFontSizeMenu = (props) => {
-  const { onChange } = props;
+  const { selectedValue, onChange } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -50,6 +51,13 @@ const CustomFontSizeMenu = (props) => {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
         size="small"
+        sx={{
+          height: 28,
+          margin: `4px`,
+          minWidth: 'unset',
+          padding: '7px',
+          width: 28,
+        }}
       >
         <img
           src="https://www.gstatic.com/images/icons/material/system_gm/2x/format_size_black_20dp.png"
@@ -155,13 +163,21 @@ export function CustomizedDividers(props) {
             <FormatItalicIcon />
           </ToggleButton>
         </StyledToggleButtonGroup>
-        <CustomFontSizeMenu onChange={handleFontSize} />
+        <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
+        <CustomFontSizeMenu
+          selectedValue={fontSize}
+          onChange={handleFontSize}
+        />
         <input
           className="editor__style color-picker"
           type="color"
           id="color-picker"
           name="body"
           onChange={handleFontColor}
+          style={{
+            cursor: 'pointer',
+            margin: 4,
+          }}
           value={color}
         />
       </Paper>
