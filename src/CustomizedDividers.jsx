@@ -98,9 +98,10 @@ const CustomFontSizeMenu = (props) => {
 export function CustomizedDividers(props) {
   const { styles, onStyleChange } = props;
 
-  const { formats, color } = useMemo(() => {
-    const { font, color } = styles;
+  const { fontSize, formats, color } = useMemo(() => {
+    const { font, fontSize, color } = styles;
     return {
+      fontSize,
       formats: font.split(' ').filter((elem) => elem.length != 0),
       color,
     };
@@ -110,6 +111,7 @@ export function CustomizedDividers(props) {
     onStyleChange({
       color,
       font: newFormats.join(' '),
+      fontSize,
     });
   };
 
@@ -117,6 +119,7 @@ export function CustomizedDividers(props) {
     onStyleChange({
       color: event.target.value,
       font: formats.join(' '),
+      fontSize,
     });
   };
 
