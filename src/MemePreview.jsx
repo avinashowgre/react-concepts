@@ -50,12 +50,15 @@ export function MemePreview(props) {
       );
 
       texts.forEach((caption) => {
-        const { text, x, y, width, height } = caption;
+        const { styles, text, x, y } = caption;
+
+        const { font, fillStyle } = styles;
+
         // Text attributes
-        context.font = '80px Impact';
+        context.font = `${font} 80px Impact`;
         context.strokeStyle = 'black';
         context.lineWidth = 3;
-        context.fillStyle = 'white';
+        context.fillStyle = fillStyle;
 
         wrapText(context, text, x, y);
       });

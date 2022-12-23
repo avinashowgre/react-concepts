@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+
+import AddIcon from '@mui/icons-material/Add';
+
 import { MemeUploader } from './MemeUploader';
-import { MemePreview } from './MemePreview';
+// import { MemePreview } from './MemePreview';
+import { MemePreviewCpy } from './MemePreviewCpy';
 import { Caption } from './Caption';
 
-/**
- * Meme component that takes in image upload and render on canvas element.
- * 1) Create a input type file component
- * 2) Create canvas element that displayed on image render
- * 3) Show close button to remove the rendered image.
- * 4) Add caption feature
- */
-
-export function Meme(props) {
+export function Meme() {
   const [image, setImage] = useState();
   const [captions, setCaptions] = useState([]);
   const [meme, setMeme] = useState();
@@ -27,15 +25,21 @@ export function Meme(props) {
   function addCaption(e) {
     e.preventDefault();
 
-    const caption = { text: '', x: 250, y: 160 + 20 * captions.length };
+    const caption = {
+      color: '',
+      font: '',
+      text: '',
+      x: 250,
+      y: 160 + 20 * captions.length,
+    };
 
     setCaptions((prevState) => [...prevState, caption]);
   }
 
-  function handleCaptionChange(index, newValue) {
+  function handleCaptionChange(index, captionObj) {
     let captionsCpy = [...captions];
 
-    captionsCpy[index].text = newValue;
+    captionsCpy.splice(index, 1, captionObj);
 
     setCaptions(captionsCpy);
   }
@@ -62,24 +66,45 @@ export function Meme(props) {
       <MemeUploader onFileInput={handleFileInput} />
       {image && (
         <div style={{ alignItems: 'flex-start', display: 'flex', gap: '20px' }}>
-          <MemePreview imageBlob={image} setMeme={setMeme} texts={captions} />
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <button type="button" onClick={addCaption}>
-              Add Caption
-            </button>
-            {captions.map((caption, index) => (
-              <Caption
-                caption={caption}
-                onInputChange={(e) =>
-                  handleCaptionChange(index, e.target.value)
-                }
-                onBtnClick={(e) => handleBtnClick(index)}
-              />
-            ))}
+          {/* <MemePreview imageBlob={image} setMeme={setMeme} texts={captions} /> */}
+          <MemePreviewCpy
+            imageBlob={image}
+            setMeme={setMeme}
+            texts={captions}
+            onCaptionChange={handleCaptionChange}
+          />
+          <div
+            style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
+          >
+            <IconButton
+              color="primary"
+              sx={{ p: '10px', height: 40, width: 40 }}
+              aria-label="directions"
+              onClick={addCaption}
+            >
+              <AddIcon />
+            </IconButton>
 
-            <button type="button" onClick={saveFile}>
-              Create
-            </button>
+            <>
+              {captions.map((caption, index) => (
+                <Caption
+                  caption={caption}
+                  onChange={(captionObj) =>
+                    handleCaptionChange(index, captionObj)
+                  }
+                  onBtnClick={(e) => handleBtnClick(index)}
+                />
+              ))}
+            </>
+
+            <Button
+              variant="contained"
+              onClick={saveFile}
+              sx={{ width: 100 }}
+              disabled={captions.length === 0}
+            >
+              Save
+            </Button>
           </div>
         </div>
       )}

@@ -3,12 +3,20 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "autoprefixer": "^10.4.11",
-    "postcss": "^8.0.9",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-router-dom": "^6.3.0",
-    "tailwindcss": "^3.1.8"
+    "'hamburger-react": "*",
+    "@babel/core": "^7.0.0",
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.10.12",
+    "@types/react": "^17.0.0 || ^18.0.0",
+    "autoprefixer": "^10.4.13",
+    "material-ui-popup-state": "^4.1.0",
+    "postcss": "^8.4.18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.3",
+    "webfontloader": "^1.6.28"
   },
   "scripts": {
     "start": "react-scripts start",
