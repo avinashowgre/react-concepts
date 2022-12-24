@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "'hamburger-react": "*",
     "@babel/core": "^7.0.0",
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
@@ -16,15 +15,54 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.3",
+    "storybook": "^6.5.15",
     "webfontloader": "^1.6.28"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^6.5.15",
+    "@storybook/addon-essentials": "^6.5.15",
+    "@storybook/addon-interactions": "^6.5.15",
+    "@storybook/addon-links": "^6.5.15",
+    "@storybook/builder-webpack4": "^6.5.15",
+    "@storybook/builder-webpack5": "^6.5.15",
+    "@storybook/manager-webpack4": "^6.5.15",
+    "@storybook/manager-webpack5": "^6.5.15",
+    "@storybook/node-logger": "^6.5.15",
+    "@storybook/preset-create-react-app": "^4.1.2",
+    "@storybook/react": "^6.5.15",
+    "@storybook/testing-library": "0.0.13",
     "react-scripts": "latest"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "eslintConfig": {
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
   }
 }
