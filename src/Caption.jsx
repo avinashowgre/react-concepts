@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import WebFont from 'webfontloader';
+import WebFont from "webfontloader";
 
-import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
+import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import InputBase from '@mui/material/InputBase';
-import Paper from '@mui/material/Paper';
-import Popover from '@mui/material/Popover';
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import InputBase from "@mui/material/InputBase";
+import Paper from "@mui/material/Paper";
+import Popover from "@mui/material/Popover";
 
-import DeleteIcon from '@mui/icons-material/Delete';
-import MenuIcon from '@mui/icons-material/Menu';
+import DeleteIcon from "@mui/icons-material/Delete";
+import MenuIcon from "@mui/icons-material/Menu";
 
-import { CustomizedDividers } from './CustomizedDividers';
+import { TextFormatter } from "./TextFormatter";
 
 export function Caption(props) {
   const { caption, onChange, onBtnClick } = props;
@@ -25,7 +25,7 @@ export function Caption(props) {
 
     (async function () {
       const { items: fonts } = await fetch(
-        'https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyB1aj9FtKfyxWips2YVhIzrKOeqdUegvKM'
+        "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyB1aj9FtKfyxWips2YVhIzrKOeqdUegvKM"
       ).then((data) => data.json());
       const fontFamilies = fonts.map((font) => font.family);
 
@@ -35,7 +35,7 @@ export function Caption(props) {
         // To load font family dynamically on user selection
         WebFont.load({
           google: {
-            families: ['ABeeZee'],
+            families: ["ABeeZee"],
           },
         });
       }
@@ -64,13 +64,13 @@ export function Caption(props) {
   return (
     <Paper
       component="form"
-      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+      sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: 400 }}
     >
       <InputBase
-        inputProps={{ 'aria-label': 'add caption' }}
+        inputProps={{ "aria-label": "add caption" }}
         onChange={(e) => handleInputChange(e.target.value)}
         placeholder="Add caption"
-        sx={{ ml: 1, flex: 1, fontFamily: 'ABeeZee' }}
+        sx={{ ml: 1, flex: 1, fontFamily: "ABeeZee" }}
         value={text}
       />
 
@@ -79,7 +79,7 @@ export function Caption(props) {
           <>
             <IconButton
               type="button"
-              sx={{ p: '10px' }}
+              sx={{ p: "10px" }}
               aria-label="search"
               {...bindTrigger(popupState)}
             >
@@ -88,15 +88,15 @@ export function Caption(props) {
             <Popover
               {...bindPopover(popupState)}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'center',
+                vertical: "top",
+                horizontal: "center",
               }}
               transformOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
+                vertical: "bottom",
+                horizontal: "center",
               }}
             >
-              <CustomizedDividers
+              <TextFormatter
                 styles={{ font, color }}
                 onStyleChange={handleStyleChange}
               />
@@ -109,7 +109,7 @@ export function Caption(props) {
 
       <IconButton
         color="error"
-        sx={{ p: '10px' }}
+        sx={{ p: "10px" }}
         aria-label="directions"
         onClick={onBtnClick}
       >

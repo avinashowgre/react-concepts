@@ -1,28 +1,28 @@
-import React, { useMemo, useState } from 'react';
-import { styled } from '@mui/material/styles';
+import React, { useMemo, useState } from "react";
+import { styled } from "@mui/material/styles";
 
-import FormatBoldIcon from '@mui/icons-material/FormatBold';
-import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import FormatBoldIcon from "@mui/icons-material/FormatBold";
+import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Paper from '@mui/material/Paper';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Paper from "@mui/material/Paper";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  '& .MuiToggleButtonGroup-grouped': {
+  "& .MuiToggleButtonGroup-grouped": {
     margin: theme.spacing(0.5),
     border: 0,
-    '&.Mui-disabled': {
+    "&.Mui-disabled": {
       border: 0,
     },
-    '&:not(:first-of-type)': {
+    "&:not(:first-of-type)": {
       borderRadius: theme.shape.borderRadius,
     },
-    '&:first-of-type': {
+    "&:first-of-type": {
       borderRadius: theme.shape.borderRadius,
     },
   },
@@ -46,16 +46,16 @@ const CustomFontSizeMenu = (props) => {
     <>
       <Button
         id="basic-button"
-        aria-controls={open ? 'basic-menu' : undefined}
+        aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
+        aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         size="small"
         sx={{
           height: 28,
           margin: `4px`,
-          minWidth: 'unset',
-          padding: '7px',
+          minWidth: "unset",
+          padding: "7px",
           width: 28,
         }}
       >
@@ -71,30 +71,30 @@ const CustomFontSizeMenu = (props) => {
         open={open}
         onClose={handleClose}
         MenuListProps={{
-          'aria-labelledby': 'basic-button',
+          "aria-labelledby": "basic-button",
         }}
       >
         <MenuItem
-          onClick={(e) => handleClose('x-small')}
-          sx={{ fontSize: 'x-small' }}
+          onClick={(e) => handleClose("x-small")}
+          sx={{ fontSize: "x-small" }}
         >
           Small
         </MenuItem>
         <MenuItem
-          onClick={(e) => handleClose('small')}
-          sx={{ fontSize: 'small' }}
+          onClick={(e) => handleClose("small")}
+          sx={{ fontSize: "small" }}
         >
           Normal
         </MenuItem>
         <MenuItem
-          onClick={(e) => handleClose('large')}
-          sx={{ fontSize: 'large' }}
+          onClick={(e) => handleClose("large")}
+          sx={{ fontSize: "large" }}
         >
           Large
         </MenuItem>
         <MenuItem
-          onClick={(e) => handleClose('xx-large')}
-          sx={{ fontSize: 'xx-large' }}
+          onClick={(e) => handleClose("xx-large")}
+          sx={{ fontSize: "xx-large" }}
         >
           Huge
         </MenuItem>
@@ -103,14 +103,14 @@ const CustomFontSizeMenu = (props) => {
   );
 };
 
-export function CustomizedDividers(props) {
+export function TextFormatter(props) {
   const { styles, onStyleChange } = props;
 
   const { fontSize, formats, color } = useMemo(() => {
     const { font, fontSize, color } = styles;
     return {
       fontSize,
-      formats: font.split(' ').filter((elem) => elem.length != 0),
+      formats: font.split(" ").filter((elem) => elem.length != 0),
       color,
     };
   }, [styles]);
@@ -118,7 +118,7 @@ export function CustomizedDividers(props) {
   const handleFormat = (event, newFormats) => {
     onStyleChange({
       color,
-      font: newFormats.join(' '),
+      font: newFormats.join(" "),
       fontSize,
     });
   };
@@ -126,7 +126,7 @@ export function CustomizedDividers(props) {
   const handleFontColor = (event) => {
     onStyleChange({
       color: event.target.value,
-      font: formats.join(' '),
+      font: formats.join(" "),
       fontSize,
     });
   };
@@ -134,7 +134,7 @@ export function CustomizedDividers(props) {
   const handleFontSize = (fontSize) => {
     onStyleChange({
       color,
-      font: formats.join(' '),
+      font: formats.join(" "),
       fontSize,
     });
   };
@@ -144,10 +144,10 @@ export function CustomizedDividers(props) {
       <Paper
         elevation={0}
         sx={{
-          alignItems: 'center',
-          display: 'flex',
+          alignItems: "center",
+          display: "flex",
           border: (theme) => `1px solid ${theme.palette.divider}`,
-          flexWrap: 'wrap',
+          flexWrap: "wrap",
         }}
       >
         <StyledToggleButtonGroup
@@ -175,7 +175,7 @@ export function CustomizedDividers(props) {
           name="body"
           onChange={handleFontColor}
           style={{
-            cursor: 'pointer',
+            cursor: "pointer",
             margin: 4,
           }}
           value={color}
