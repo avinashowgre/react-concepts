@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { TextFormatter } from "./TextFormatter";
 
 export default {
-  title: "Caption/TextFormatter",
+  title: "Custom/TextFormatter",
   component: TextFormatter,
 };
 

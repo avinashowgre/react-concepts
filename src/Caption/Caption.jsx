@@ -13,7 +13,7 @@ import Popover from "@mui/material/Popover";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MenuIcon from "@mui/icons-material/Menu";
 
-import { TextFormatter } from "./TextFormatter";
+import { TextFormatter } from "../TextFormatter";
 
 export function Caption(props) {
   const { caption, onChange, onBtnClick } = props;
@@ -47,7 +47,6 @@ export function Caption(props) {
   }, []);
 
   function handleStyleChange(styles) {
-    console.log(styles);
     onChange({
       ...caption,
       ...styles,
@@ -105,16 +104,20 @@ export function Caption(props) {
         )}
       </PopupState>
 
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      {onBtnClick && (
+        <>
+          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
 
-      <IconButton
-        color="error"
-        sx={{ p: "10px" }}
-        aria-label="directions"
-        onClick={onBtnClick}
-      >
-        <DeleteIcon />
-      </IconButton>
+          <IconButton
+            color="error"
+            sx={{ p: "10px" }}
+            aria-label="directions"
+            onClick={onBtnClick}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </>
+      )}
     </Paper>
   );
 }
