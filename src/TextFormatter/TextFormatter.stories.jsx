@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { TextFormatter } from "./TextFormatter";
+
+import mockresp from "./google-fonts-response.json";
+import { ClassNames } from "@emotion/react";
 
 export default {
   title: "Custom/TextFormatter",
@@ -26,8 +29,10 @@ export const primary = () => {
   const [styles, setStyles] = useState({
     color: "#000000",
     font: "",
-    fontSize: "",
+    fontSize: 10,
+    fontFamily: "",
   });
+  const webFonts = [...mockresp];
 
   const handleStyleChange = (styles) => {
     setStyles(styles);
@@ -44,7 +49,9 @@ export const primary = () => {
         style={{
           border: `1px solid ${styles.color}`,
           boxShadow: `0 8px 16px 0 ${hexToRgbA(styles.color)}`,
-          fontSize: `${styles.fontSize}`,
+          color: `${styles.color}`,
+          fontFamily: `${styles.fontFamily}`,
+          fontSize: `${styles.fontSize}px`,
           padding: 10,
           height: 120,
           width: 400,
@@ -52,7 +59,11 @@ export const primary = () => {
       >
         <code>{JSON.stringify(styles, null, 4)}</code>
       </pre>
-      <TextFormatter styles={styles} onStyleChange={handleStyleChange} />
+      <TextFormatter
+        styles={styles}
+        onStyleChange={handleStyleChange}
+        webFonts={webFonts}
+      />
     </div>
   );
 };

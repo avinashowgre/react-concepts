@@ -16,35 +16,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { TextFormatter } from "../TextFormatter";
 
 export function Caption(props) {
-  const { caption, onChange, onBtnClick } = props;
-  const [webFonts, setWebFonts] = useState([]);
-  const { color, font, text } = caption;
-
-  useEffect(() => {
-    let active = true;
-
-    (async function () {
-      const { items: fonts } = await fetch(
-        "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyB1aj9FtKfyxWips2YVhIzrKOeqdUegvKM"
-      ).then((data) => data.json());
-      const fontFamilies = fonts.map((font) => font.family);
-
-      if (active) {
-        setWebFonts(fontFamilies);
-
-        // To load font family dynamically on user selection
-        WebFont.load({
-          google: {
-            families: ["ABeeZee"],
-          },
-        });
-      }
-    })();
-
-    () => {
-      active = false;
-    };
-  }, []);
+  const { caption, onChange, onBtnClick, webFonts } = props;
+  const { color, font, fontFamily, text } = caption;
 
   function handleStyleChange(styles) {
     onChange({
@@ -96,8 +69,9 @@ export function Caption(props) {
               }}
             >
               <TextFormatter
-                styles={{ font, color }}
+                styles={{ fontFamily, font, color }}
                 onStyleChange={handleStyleChange}
+                webFonts={webFonts}
               />
             </Popover>
           </>

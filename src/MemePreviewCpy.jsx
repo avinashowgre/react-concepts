@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
-const TEST_ID = 'meme-preview';
-const fontSize = '24px';
+const TEST_ID = "meme-preview";
+const fontSize = "24px";
 
 export function MemePreviewCpy(props) {
   const { imageBlob, onCaptionChange, setMeme, texts = [] } = props;
@@ -22,7 +22,7 @@ export function MemePreviewCpy(props) {
   function drag(evt) {
     evt.target.x = evt.stageX;
     evt.target.y = evt.stageY;
-    evt.target.cursor = 'pointer';
+    evt.target.cursor = "pointer";
     canvasStage.update();
   }
 
@@ -30,6 +30,7 @@ export function MemePreviewCpy(props) {
     if (onCaptionChange) {
       const { text, x, y } = evt.target;
       onCaptionChange(index, {
+        ...texts[index],
         text,
         x,
         y,
@@ -50,21 +51,21 @@ export function MemePreviewCpy(props) {
       canvasStage.addChild(bitmap);
 
       texts.forEach((inputText, index) => {
-        const { color, font, fontSize, text, x, y } = inputText;
+        const { color, font, fontFamily, fontSize, text, x, y } = inputText;
         let createText = new createjs.Text();
         createText.set({
           color,
           text,
-          font: `${font} 50px Arial`,
-          lineWidth: canvasStage.canvas.width / 2,
+          font: `${font} ${fontSize}px ${fontFamily}`,
+          lineWidth: canvasStage.canvas.width,
           lineHeight: 20,
-          textBaseline: 'top',
-          textAlign: 'left',
+          textBaseline: "top",
+          textAlign: "left",
           x,
           y,
         });
-        createText.on('pressmove', drag);
-        createText.on('pressup', function (evt) {
+        createText.on("pressmove", drag);
+        createText.on("pressup", function (evt) {
           drop(evt, index);
         });
         canvasStage.addChild(createText);
@@ -82,9 +83,9 @@ export function MemePreviewCpy(props) {
       height="600"
       id={TEST_ID}
       style={{
-        border: '1px solid black',
-        maxWidth: '100%',
-        height: 'auto',
+        border: "1px solid black",
+        maxWidth: "100%",
+        height: "auto",
       }}
       width="500"
     ></canvas>

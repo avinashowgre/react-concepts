@@ -1,19 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+import WebFont from "webfontloader";
 
-import AddIcon from '@mui/icons-material/Add';
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 
-import { MemeUploader } from './MemeUploader';
+import AddIcon from "@mui/icons-material/Add";
+
+import { MemeUploader } from "./MemeUploader";
 // import { MemePreview } from './MemePreview';
-import { MemePreviewCpy } from './MemePreviewCpy';
-import { Caption } from './Caption';
+import { MemePreviewCpy } from "./MemePreviewCpy";
+import { Caption } from "./Caption";
 
 export function Meme() {
   const [image, setImage] = useState();
   const [captions, setCaptions] = useState([]);
   const [meme, setMeme] = useState();
+  const [webFonts, setWebFonts] = useState([]);
+
+  useEffect(() => {
+    let active = true;
+
+    (async function () {
+      const { items: fonts } = await fetch(
+        "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyB1aj9FtKfyxWips2YVhIzrKOeqdUegvKM"
+      ).then((data) => data.json());
+      const fontFamilies = fonts.map((font) => font.family);
+
+      if (active) {
+        setWebFonts(
+          fontFamilies.filter((font) => {
+            try {
+              WebFont.load({
+                google: {
+                  families: [font],
+                },
+              });
+              return true;
+            } catch (e) {
+              return false;
+            }
+          })
+        );
+      }
+    })();
+
+    () => {
+      active = false;
+    };
+  }, []);
 
   function handleFileInput(event) {
     if (event.target.files.length > 0) {
@@ -26,9 +61,11 @@ export function Meme() {
     e.preventDefault();
 
     const caption = {
-      color: '',
-      font: '',
-      text: '',
+      color: "",
+      font: "",
+      fontFamily: "",
+      fontSize: 10,
+      text: "",
       x: 250,
       y: 160 + 20 * captions.length,
     };
@@ -56,7 +93,7 @@ export function Meme() {
     var win = window.open();
     win.document.write(
       '<iframe src="' +
-        meme.toDataURL('image/png') +
+        meme.toDataURL("image/png") +
         '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>'
     );
   }
@@ -65,7 +102,7 @@ export function Meme() {
     <div className="meme-container">
       <MemeUploader onFileInput={handleFileInput} />
       {image && (
-        <div style={{ alignItems: 'flex-start', display: 'flex', gap: '20px' }}>
+        <div style={{ alignItems: "flex-start", display: "flex", gap: "20px" }}>
           {/* <MemePreview imageBlob={image} setMeme={setMeme} texts={captions} /> */}
           <MemePreviewCpy
             imageBlob={image}
@@ -74,11 +111,11 @@ export function Meme() {
             onCaptionChange={handleCaptionChange}
           />
           <div
-            style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
+            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
           >
             <IconButton
               color="primary"
-              sx={{ p: '10px', height: 40, width: 40 }}
+              sx={{ p: "10px", height: 40, width: 40 }}
               aria-label="directions"
               onClick={addCaption}
             >
@@ -93,6 +130,7 @@ export function Meme() {
                     handleCaptionChange(index, captionObj)
                   }
                   onBtnClick={(e) => handleBtnClick(index)}
+                  webFonts={webFonts}
                 />
               ))}
             </>
